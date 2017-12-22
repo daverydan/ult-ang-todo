@@ -1,32 +1,33 @@
-function TodoController() {
+function TodoController(TodoService) {
+  var ctrl = this;
   this.newTodo = '';
+  this.list = [];
 
-  this.list = [{
-    title: 'First todo item!',
-    completed: true
-  }, {
-    title: 'Second todo item!',
-    completed: false
-  }, {
-    title: 'Third todo item!',
-    completed: false
-  }];
+  function getTodos() {
+    TodoService
+      .retrieve()
+      .then(function(response) {
+        ctrl.list = response;
+      });
+  }
 
-  this.addTodo = function() {
-    this.list.push({
-      title: this.newTodo,
+  ctrl.addTodo = function() {
+    ctrl.list.push({
+      title: ctrl.newTodo,
       completed: false
     });
-    this.newTodo = '';
+    ctrl.newTodo = '';
   }
 
-  this.removeTodo = function(item, index) {
-    this.list.splice(index, 1);
+  ctrl.removeTodo = function(item, index) {
+    ctrl.list.splice(index, 1);
   }
 
-  this.getRemaining = () => this.list.filter( item => !item.completed );
+  ctrl.getRemaining = () => ctrl.list.filter( item => !item.completed );
+
+  getTodos();
 }
 
 angular
   .module('app')
-  .controller('TodoController', TodoController);
+  .controller('TodoController', ['TodoService', TodoController]);
