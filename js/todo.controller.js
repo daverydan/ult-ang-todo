@@ -1,7 +1,7 @@
 function TodoController() {
   this.list = [{
     title: 'First todo item!',
-    completed: false
+    completed: true
   }, {
     title: 'Second todo item!',
     completed: false
