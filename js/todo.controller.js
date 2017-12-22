@@ -11,19 +11,50 @@ function TodoController(TodoService) {
       });
   }
 
+  ctrl.updateTodo = function(item, index) {
+    if (!item.title) {
+      ctrl.removeTodo(item, index);
+      return;
+    }
+    TodoService
+      .update(item);
+  }
+
   ctrl.addTodo = function() {
-    ctrl.list.push({
-      title: ctrl.newTodo,
-      completed: false
-    });
-    ctrl.newTodo = '';
+    if (!ctrl.newTodo) {
+      return;
+    }
+    TodoService
+      .create({
+        title: ctrl.newTodo,
+        completed: false
+      })
+      .then(function(response) {
+        ctrl.list.unshift(response);
+        ctrl.newTodo = '';
+      });
   }
 
   ctrl.removeTodo = function(item, index) {
-    ctrl.list.splice(index, 1);
+    TodoService
+      .remove(item)
+      .then(function(response) {
+        ctrl.list.splice(index, 1);
+      });
   }
 
   ctrl.getRemaining = () => ctrl.list.filter( item => !item.completed );
+
+  ctrl.toggleState = function(item) {
+    TodoService
+      .update(item)
+      .then(function(response) {
+        // do nothing
+      }, function() {
+        // something went wrong on the server, revert change
+        item.completed = !item.completed;
+      });
+  }
 
   getTodos();
 }
