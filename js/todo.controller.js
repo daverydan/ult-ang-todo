@@ -23,6 +23,8 @@ function TodoController() {
   this.removeTodo = function(item, index) {
     this.list.splice(index, 1);
   }
+
+  this.getRemaining = () => this.list.filter( item => !item.completed );
 }
 
 angular

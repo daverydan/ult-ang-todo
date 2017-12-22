@@ -24,6 +24,14 @@
           <a href="" ng-click="todo.removeTodo(item, $index)">&#215;</a>
         </li>
       </ul>
+      <p class="todo__remaining">
+        <span ng-show="todo.getRemaining().length > 0">
+          You have {{ todo.getRemaining().length }} of {{ todo.list.length }} items todo!
+        </span>
+        <span ng-show="todo.getRemaining().length === 0">
+          You are super productive!
+        </span>
+      </p>
     </div>
 
     <script src="js/app.js"></script>
